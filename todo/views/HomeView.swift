@@ -11,10 +11,9 @@ struct HomeView: View {
     @State private var showDetails  = false
     
     var body: some View {
-        
         NavigationStack {
             VStack {
-                Text("hola")
+                ListView()
             }
             .navigationTitle("Todos list")
             .navigationBarTitleDisplayMode(.inline)
@@ -26,10 +25,9 @@ struct HomeView: View {
                 })
             })
             .sheet(isPresented: $showDetails){
-                Text("hola")
+               FormView()
             }
         }
-        .padding(.horizontal)
     }
 }
 

@@ -9,7 +9,17 @@ import SwiftUI
 
 struct TodoView: View {
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        TabView {
+            HomeView().tabItem {
+                Text("Todos")
+                Image(systemName: "list.bullet")
+            }
+            
+            CompleteTaskView().tabItem {
+                Text("Complete")
+                Image(systemName: "checkmark.circle.fill")
+            }
+        }
     }
 }
 
