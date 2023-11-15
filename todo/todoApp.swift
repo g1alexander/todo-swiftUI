@@ -9,9 +9,11 @@ import SwiftUI
 
 @main
 struct todoApp: App {
+    @State private var todos = Todo.sampleData
+    
     var body: some Scene {
         WindowGroup {
-            TodoView()
+            TodoView(todos: $todos)
         }
     }
 }

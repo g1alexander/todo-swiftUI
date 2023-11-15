@@ -8,12 +8,15 @@
 import SwiftUI
 
 struct HomeView: View {
+    @Binding var todos: [Todo]
     @State private var showDetails  = false
+    @State private var isEdit = false
+    @State private var todo: Todo = Todo(name: "", description: "")
     
     var body: some View {
         NavigationStack {
             VStack {
-                ListView()
+                ListView(todos: $todos)
             }
             .navigationTitle("Todos list")
             .navigationBarTitleDisplayMode(.inline)
@@ -25,12 +28,12 @@ struct HomeView: View {
                 })
             })
             .sheet(isPresented: $showDetails){
-               FormView()
+               FormView(todo: $todo, isEdit: $isEdit)
             }
         }
     }
 }
 
 #Preview {
-    HomeView()
+    HomeView(todos: .constant(Todo.sampleData))
 }

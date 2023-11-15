@@ -8,14 +8,16 @@
 import SwiftUI
 
 struct TodoView: View {
+    @Binding var todos: [Todo]
+    
     var body: some View {
         TabView {
-            HomeView().tabItem {
+            HomeView(todos: $todos).tabItem {
                 Text("Todos")
                 Image(systemName: "list.bullet")
             }
             
-            CompleteTaskView().tabItem {
+            CompleteTaskView(todos: $todos).tabItem {
                 Text("Complete")
                 Image(systemName: "checkmark.circle.fill")
             }
@@ -24,5 +26,5 @@ struct TodoView: View {
 }
 
 #Preview {
-    TodoView()
+    TodoView(todos: .constant(Todo.sampleData))
 }

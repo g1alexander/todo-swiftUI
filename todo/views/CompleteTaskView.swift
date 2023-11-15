@@ -8,10 +8,12 @@
 import SwiftUI
 
 struct CompleteTaskView: View {
+    @Binding var todos: [Todo]
+    
     var body: some View {
         NavigationStack {
             VStack {
-                ListView()
+                ListView(todos: $todos)
             }
             .navigationTitle("Todos list")
             .navigationBarTitleDisplayMode(.inline)
@@ -20,5 +22,5 @@ struct CompleteTaskView: View {
 }
 
 #Preview {
-    CompleteTaskView()
+    CompleteTaskView(todos: .constant(Todo.sampleData))
 }

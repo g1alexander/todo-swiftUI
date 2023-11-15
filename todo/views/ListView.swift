@@ -8,13 +8,15 @@
 import SwiftUI
 
 struct ListView: View {
-    @State private var tasks = ["Tarea 1", "Tarea 2", "Tarea 3"]
+    @Binding var todos: [Todo]
+    @State private var todoEdit: Todo = Todo(name: "", description: "")
     @State private var showDetails  = false
+    @State private var isEdit = true
     
     var body: some View {
         List {
-            ForEach(tasks, id: \.self) { task in
-                Text(task)
+            ForEach($todos) { $todo in
+                Text(todo.name)
                     .swipeActions(edge: .leading) {
                         Button(action: {}, label: {
                             Label("Delete", systemImage: "trash.fill")
@@ -22,15 +24,20 @@ struct ListView: View {
                         .tint(.red)
                     }
                     .swipeActions(edge: .trailing) {
-                        Button(action: {showDetails = true}, label: {
+                        Button(action: {
+                            let todo = todos.filter { $0.id == todo.id }
+                            todoEdit = todo[0]
+                            
+                            showDetails = true
+                        }, label: {
                             Label("Edit", systemImage: "pencil")
                         })
                         .tint(.blue)
                     }
                     .swipeActions(edge: .trailing) {
                         Button(action: {
-                            if let index = tasks.firstIndex(of: task) {
-                                tasks.remove(at: index)
+                            if let index = todos.firstIndex(where: {$0.id == todo.id}){
+                                todos.remove(at: index)
                             }
                         }, label: {
                             Label("complete", systemImage: "checkmark.circle.fill")
@@ -38,7 +45,7 @@ struct ListView: View {
                         .tint(.green)
                     }
                     .sheet(isPresented: $showDetails){
-                        FormView()
+                        FormView(todo: $todoEdit, isEdit: $isEdit)
                     }
             }
         }
@@ -46,5 +53,5 @@ struct ListView: View {
 }
 
 #Preview {
-    ListView()
+    ListView(todos: .constant(Todo.sampleData))
 }
