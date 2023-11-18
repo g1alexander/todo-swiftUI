@@ -9,11 +9,11 @@ import Foundation
 
 
 struct Todo: Identifiable, Codable {
-    var id: UUID
+    var id: Int
     var name: String
     var description: String
     
-    init(id: UUID = UUID(), name: String, description: String) {
+    init(id: Int, name: String, description: String) {
         self.id = id
         self.name = name
         self.description = description
@@ -22,7 +22,18 @@ struct Todo: Identifiable, Codable {
 
 extension Todo {
     static let sampleData: [Todo]  =  [
-        Todo(name: "todo 1", description: "holii"),
-        Todo(name: "jajaja", description: "siuuu")
+        Todo(id: 1, name: "", description: "")
     ]
+}
+
+extension Todo {
+    static func mapDataAPI(fetchData: TodoAPI) -> [Todo] {
+        
+        let mapData = fetchData.data.map { todo in
+            Todo(id:todo.id, name: todo.attributes.name, description: todo.attributes.description)
+        }
+        
+        return mapData
+        
+    }
 }

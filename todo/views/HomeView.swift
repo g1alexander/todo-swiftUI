@@ -11,7 +11,7 @@ struct HomeView: View {
     @Binding var todos: [Todo]
     @State private var showDetails  = false
     @State private var isEdit = false
-    @State private var todo: Todo = Todo(name: "", description: "")
+    @State private var todo: Todo = Todo(id: 0, name: "", description: "")
     
     var body: some View {
         NavigationStack {

@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ListView: View {
     @Binding var todos: [Todo]
-    @State private var todoEdit: Todo = Todo(name: "", description: "")
+    @State private var todoEdit: Todo = Todo(id: 0, name: "", description: "")
     @State private var showDetails  = false
     @State private var isEdit = true
     
