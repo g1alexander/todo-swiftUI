@@ -18,7 +18,15 @@ struct ListView: View {
             ForEach($todos) { $todo in
                 Text(todo.name)
                     .swipeActions(edge: .leading) {
-                        Button(action: {}, label: {
+                        Button(action: {
+                            if let index = todos.firstIndex(where: {$0.id == todo.id}){
+                                
+                                Task {
+                                    await fetchDataDelete(id: todo.id)
+                                    todos.remove(at: index)
+                                }
+                            }
+                        }, label: {
                             Label("Delete", systemImage: "trash.fill")
                         })
                         .tint(.red)
@@ -37,7 +45,10 @@ struct ListView: View {
                     .swipeActions(edge: .trailing) {
                         Button(action: {
                             if let index = todos.firstIndex(where: {$0.id == todo.id}){
-                                todos.remove(at: index)
+                                Task {
+                                    await fetchDataEdit(todo: todo)
+                                    todos.remove(at: index)
+                                }
                             }
                         }, label: {
                             Label("complete", systemImage: "checkmark.circle.fill")
@@ -49,6 +60,13 @@ struct ListView: View {
                     }
             }
         }
+    }
+    
+    func fetchDataDelete(id: Int) async {
+        await TodoAPI.DELETE(id: id)
+    }
+    func fetchDataEdit(todo:Todo) async {
+        await TodoAPI.PUT(data: DataSendApi(data: Data(name: todo.name, complete: true, description: todo.description)), id: todo.id)
     }
 }
 
