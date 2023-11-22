@@ -30,9 +30,14 @@ struct FormView: View {
             
             Button(action: {
                 if isEdit {
-                    
+                    Task {
+                        await fetchDataEdit()
+                    }
                 } else {
-                    
+                    print("add")
+                    Task {
+                        await fetchDataAdd()
+                    }
                 }
                 
             }, label: {
@@ -47,8 +52,16 @@ struct FormView: View {
         }
         .padding()
     }
+    
+    func fetchDataAdd() async {
+        await TodoAPI.POST(data: DataSendApi(data: Data(name: todo.name, complete: false, description: todo.description)))
+    }
+    
+    func fetchDataEdit() async {
+        await TodoAPI.PUT(data: DataSendApi(data: Data(name: todo.name, complete: false, description: todo.description)), id: todo.id)
+    }
 }
 
 #Preview {
-    FormView(todo: .constant(Todo.sampleData[0]), isEdit: .constant(true))
+    FormView(todo: .constant(Todo.sampleData[0]), isEdit: .constant(false))
 }
