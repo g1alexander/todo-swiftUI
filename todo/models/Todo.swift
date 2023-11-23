@@ -27,11 +27,15 @@ extension Todo {
 }
 
 extension Todo {
-    static func mapDataAPI(fetchData: TodoAPI) -> [Todo] {
+    static func mapDataAPI(fetchData: TodoAPI, isComplete: Bool) -> [Todo] {
         
-        let mapData = fetchData.data.map { todo in
-            Todo(id:todo.id, name: todo.attributes.name, description: todo.attributes.description)
-        }
+        let mapData = fetchData.data
+            .filter { todo in
+                return todo.attributes.complete == isComplete
+            }
+            .map { todo in
+                Todo(id:todo.id, name: todo.attributes.name, description: todo.attributes.description)
+            }
         
         return mapData
         

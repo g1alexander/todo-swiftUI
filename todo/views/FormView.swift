@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct FormView: View {
+    @Binding var showDetails: Bool
+    @Binding var todos: [Todo]
     @Binding var todo: Todo
     @Binding var isEdit: Bool
     
@@ -47,21 +49,42 @@ struct FormView: View {
                     .background(.blue)
                     .foregroundStyle(.white)
                     .clipShape(RoundedRectangle(cornerRadius: 7.0, style: .continuous))
-                    
+                
             })
         }
         .padding()
     }
     
     func fetchDataAdd() async {
-        await TodoAPI.POST(data: DataSendApi(data: Data(name: todo.name, complete: false, description: todo.description)))
+        if let response = await TodoAPI.POST(data: DataSendApi(data: Data(name: todo.name, complete: false, description: todo.description))) {
+            
+            todos.append(response)
+            showDetails = false
+        }
     }
     
     func fetchDataEdit() async {
-        await TodoAPI.PUT(data: DataSendApi(data: Data(name: todo.name, complete: false, description: todo.description)), id: todo.id)
+        if let response = await TodoAPI.PUT(data: DataSendApi(data: Data(name: todo.name, complete: false, description: todo.description)), id: todo.id){
+            print(response)
+            
+            let mapData = todos.map { existingTodo in
+                var updatedTodo = existingTodo // Creamos una copia mutable
+                
+                if existingTodo.id == response.id {
+                    updatedTodo.name = response.name
+                    updatedTodo.description = response.description
+                }
+                
+                return updatedTodo
+            }
+            
+            todos = mapData
+            
+            showDetails = false
+        }
     }
 }
 
 #Preview {
-    FormView(todo: .constant(Todo.sampleData[0]), isEdit: .constant(false))
+    FormView(showDetails: .constant(false), todos: .constant(Todo.sampleData), todo: .constant(Todo.sampleData[0]), isEdit: .constant(false))
 }

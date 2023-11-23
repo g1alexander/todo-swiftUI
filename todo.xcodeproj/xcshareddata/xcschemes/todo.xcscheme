@@ -52,7 +52,7 @@
       <EnvironmentVariables>
          <EnvironmentVariable
             key = "API_URL"
-            value = "https://80bf-190-2-211-116.ngrok-free.app"
+            value = "https://3b53-190-2-211-116.ngrok-free.app"
             isEnabled = "YES">
          </EnvironmentVariable>
       </EnvironmentVariables>

@@ -28,7 +28,7 @@ struct HomeView: View {
                 })
             })
             .sheet(isPresented: $showDetails){
-               FormView(todo: $todo, isEdit: $isEdit)
+                FormView(showDetails: $showDetails, todos: $todos, todo: $todo, isEdit: $isEdit)
             }
         }
     }

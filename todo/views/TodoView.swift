@@ -7,8 +7,8 @@
 
 import SwiftUI
 
-struct TodoView: View {
-    @Binding var todos: [Todo]
+struct TodoView: View {    
+    @State private var todos = Todo.sampleData
     
     var body: some View {
         TabView {
@@ -16,15 +16,27 @@ struct TodoView: View {
                 Text("Todos")
                 Image(systemName: "list.bullet")
             }
+            .task {
+                await fetchDataAll(isComplete: false)
+            }
             
             CompleteTaskView(todos: $todos).tabItem {
                 Text("Complete")
                 Image(systemName: "checkmark.circle.fill")
             }
+            .task {
+                await fetchDataAll(isComplete: true)
+            }
+        }
+    }
+    
+    func fetchDataAll(isComplete: Bool) async {
+        if let response = await TodoAPI.GETALL(isComplete: isComplete) {
+            todos = response
         }
     }
 }
 
 #Preview {
-    TodoView(todos: .constant(Todo.sampleData))
+    TodoView()
 }

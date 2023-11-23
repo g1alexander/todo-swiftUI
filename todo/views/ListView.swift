@@ -56,7 +56,7 @@ struct ListView: View {
                         .tint(.green)
                     }
                     .sheet(isPresented: $showDetails){
-                        FormView(todo: $todoEdit, isEdit: $isEdit)
+                        FormView(showDetails: $showDetails, todos: $todos, todo: $todoEdit, isEdit: $isEdit)
                     }
             }
         }
@@ -65,8 +65,8 @@ struct ListView: View {
     func fetchDataDelete(id: Int) async {
         await TodoAPI.DELETE(id: id)
     }
-    func fetchDataEdit(todo:Todo) async {
-        await TodoAPI.PUT(data: DataSendApi(data: Data(name: todo.name, complete: true, description: todo.description)), id: todo.id)
+    func fetchDataEdit(todo:Todo) async  {
+        _ = await TodoAPI.PUT(data: DataSendApi(data: Data(name: todo.name, complete: true, description: todo.description)), id: todo.id)
     }
 }
 
